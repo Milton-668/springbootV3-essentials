@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,6 +40,15 @@ public class AnimeController {
         log.info("Find by id: " + id + " " + getHour());
         log.info("O status da requisão é: " + getStatus());
         return ResponseEntity.ok(animeService.findById(id));
+    }
+    /*Método que insere um novo anime na lista, onde que é Mapeado para o
+    * corpo do dominio Anime, feito isso é chamado o método save passando
+    * o anime e o código de 201*/
+    @PostMapping
+    public ResponseEntity<Anime> save(@RequestBody Anime anime) {
+        log.info("The anime is: " + anime  + " " + getHour());
+        log.info("O status da requisão é: " + HttpStatus.CREATED);
+        return new ResponseEntity<>(animeService.save(anime), HttpStatus.CREATED);
     }
 
     private String getHour() {
