@@ -40,5 +40,10 @@ public class AnimeService {
         animes.add(anime);
         return anime;
     }
-
+    /*Método responsável por deletar os animes a partir de um id
+    * para isso ele acessa o método findById para procurar se existe
+    * um anime com o dado id ou não.*/
+    public void delete(Long id) {
+        animes.remove(findById(id));
+    }
 }

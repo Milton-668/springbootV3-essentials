@@ -41,14 +41,23 @@ public class AnimeController {
         log.info("O status da requisão é: " + getStatus());
         return ResponseEntity.ok(animeService.findById(id));
     }
+
     /*Método que insere um novo anime na lista, onde que é Mapeado para o
-    * corpo do dominio Anime, feito isso é chamado o método save passando
-    * o anime e o código de 201*/
+     * corpo do dominio Anime, feito isso é chamado o método save passando
+     * o anime e o código de 201*/
     @PostMapping
     public ResponseEntity<Anime> save(@RequestBody Anime anime) {
-        log.info("The anime is: " + anime  + " " + getHour());
+        log.info("The anime is: " + anime + " " + getHour());
         log.info("O status da requisão é: " + HttpStatus.CREATED);
         return new ResponseEntity<>(animeService.save(anime), HttpStatus.CREATED);
+    }
+    /*Método que delete um anime da lista
+    * para isso ele espera um id existente na url
+    * e retorna o status 204 após a realização da requisição*/
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        animeService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     private String getHour() {
