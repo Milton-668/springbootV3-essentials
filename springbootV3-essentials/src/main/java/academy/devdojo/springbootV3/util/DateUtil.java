@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+//Indica que a classe em questão pode ser instanciada
 @Component
 public class DateUtil {
 

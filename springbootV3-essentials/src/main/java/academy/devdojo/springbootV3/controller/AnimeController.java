@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+//Define que a classe é um controlador
 @RestController
+//Define que a classe será uma requisição mapeada no endereço passado
 @RequestMapping("animes")
+//Define os logs
 @Log4j2
+//Utilizada para instanciar uma classe, onde requer o constructor
 @RequiredArgsConstructor
 public class AnimeController {
 
