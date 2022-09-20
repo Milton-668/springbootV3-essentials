@@ -59,6 +59,16 @@ public class AnimeController {
         animeService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    /*Método responsável por modificar o objeto, para isso
+    * é realizado chamado o método replace que encontra-se
+    * no service, é realizado as validações e retornarndo o
+    * status 0K*/
+    @PutMapping()
+    public ResponseEntity<Void> replace(@RequestBody Anime anime) {
+        animeService.replace(anime);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     private String getHour() {
         return dateUtil.formatLocalDateTimeToDataBaseStyle(LocalDateTime.now());

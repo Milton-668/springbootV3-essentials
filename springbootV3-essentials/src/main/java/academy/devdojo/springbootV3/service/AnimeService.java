@@ -33,17 +33,29 @@ public class AnimeService {
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not found"));
     }
+
     /*Método responsável por adicionar um novo anime na lista*/
     public Anime save(Anime anime) {
         //Seta um novo ID randômico para identificar na lista
-        anime.setId(ThreadLocalRandom.current().nextLong(3,20));
+        anime.setId(ThreadLocalRandom.current().nextLong(3, 20));
         animes.add(anime);
         return anime;
     }
+
     /*Método responsável por deletar os animes a partir de um id
-    * para isso ele acessa o método findById para procurar se existe
-    * um anime com o dado id ou não.*/
+     * para isso ele acessa o método findById para procurar se existe
+     * um anime com o dado id ou não.*/
     public void delete(Long id) {
         animes.remove(findById(id));
+    }
+    /*Método responsável por modificar o objeto
+    * para isso é passado como parâmetro um anime
+    * feito isso é checado dentro do delete() se
+    * há um anime com o ID passado, caso não haja é
+    * mostrado o estatus 204, caso haja é modificado
+    * o conteudo do anime agora modificando o objeto */
+    public void replace(Anime anime) {
+        delete(anime.getId());
+        animes.add(anime);
     }
 }
