@@ -3,12 +3,12 @@ package academy.devdojo.springbootV3.service;
 import academy.devdojo.springbootV3.domain.Anime;
 import academy.devdojo.springbootV3.mapper.AnimeMapper;
 import academy.devdojo.springbootV3.repository.AnimeRepository;
+import academy.devdojo.springbootV3.request.AnimePostRequestBody;
+import academy.devdojo.springbootV3.request.AnimePutRequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import request.AnimePostRequestBody;
-import request.AnimePutRequestBody;
 
 import java.util.List;
 
@@ -17,8 +17,17 @@ import java.util.List;
 public class AnimeService {
 
     private final AnimeRepository animeRepository;
+
     public List<Anime> listAll() {
         return animeRepository.findAll();
+    }
+    /*Método responsável buscar dentro da lista de nomes o nome passado*/
+    public List<Anime> findByName(String name) {
+        return animeRepository.findByName(name);
+    }
+    /*Método responsável por buscar um apartir de uma letra que o reconheça*/
+    public List<Anime> findAllByNameContainingIgnoreCase(String name){
+        return animeRepository.findAllByNameContainingIgnoreCase(name);
     }
 
     /*Método responsável por procurar um anime apartir de um id passado*/

@@ -1,4 +1,4 @@
-package request;
+package academy.devdojo.springbootV3.request;
 
 import lombok.Data;
 

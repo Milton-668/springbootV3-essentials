@@ -3,8 +3,8 @@ package academy.devdojo.springbootV3.mapper;
 import academy.devdojo.springbootV3.domain.Anime;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import request.AnimePostRequestBody;
-import request.AnimePutRequestBody;
+import academy.devdojo.springbootV3.request.AnimePostRequestBody;
+import academy.devdojo.springbootV3.request.AnimePutRequestBody;
 
 @Mapper(componentModel = "spring")
 public abstract class AnimeMapper {
