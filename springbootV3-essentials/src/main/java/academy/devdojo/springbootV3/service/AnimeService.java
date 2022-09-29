@@ -1,6 +1,7 @@
 package academy.devdojo.springbootV3.service;
 
 import academy.devdojo.springbootV3.domain.Anime;
+import academy.devdojo.springbootV3.mapper.AnimeMapper;
 import academy.devdojo.springbootV3.repository.AnimeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,6 @@ import java.util.List;
 public class AnimeService {
 
     private final AnimeRepository animeRepository;
-
     public List<Anime> listAll() {
         return animeRepository.findAll();
     }
@@ -29,8 +29,9 @@ public class AnimeService {
 
     /*Método responsável por adicionar um novo anime na lista*/
     public Anime save(AnimePostRequestBody animePostRequestBody) {
-        Anime anime = Anime.builder().name(animePostRequestBody.getName()).build();
-        return animeRepository.save(anime);
+        //Utilizada para mapear a conversão do DTO para a classe Anime, expondo apenas o necessário
+        Anime mapper = AnimeMapper.INSTANCE.AnimePostRequestBodyToAnime(animePostRequestBody);
+        return animeRepository.save(mapper);
     }
 
 
@@ -40,11 +41,9 @@ public class AnimeService {
 
     public void replace(AnimePutRequestBody animePutRequestBody) {
         Anime savedAnime = findByIdOrElseThrowBadRequestException(animePutRequestBody.getId());
-        Anime anime = Anime.builder()
-                .id(savedAnime.getId())
-                .name(animePutRequestBody.getName())
-                .build();
+        Anime mapper = AnimeMapper.INSTANCE.AnimePutRequestBodyToAnime(animePutRequestBody);
+        mapper.setId(savedAnime.getId());
 
-        animeRepository.save(anime);
+        animeRepository.save(mapper);
     }
 }
