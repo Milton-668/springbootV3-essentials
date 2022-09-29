@@ -8,6 +8,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import request.AnimePostRequestBody;
+import request.AnimePutRequestBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,14 +41,14 @@ public class AnimeController {
     public ResponseEntity<Anime> findById(@PathVariable Long id) {
         log.info("Find by id: " + id + " " + getHour());
         log.info("O status da requisão é: " + getStatus());
-        return ResponseEntity.ok(animeService.findById(id));
+        return ResponseEntity.ok(animeService.findByIdOrElseThrowBadRequestException(id));
     }
 
     /*Método que insere um novo anime na lista, onde que é Mapeado para o
      * corpo do dominio Anime, feito isso é chamado o método save passando
      * o anime e o código de 201*/
     @PostMapping
-    public ResponseEntity<Anime> save(@RequestBody Anime anime) {
+    public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody anime) {
         log.info("The anime is: " + anime + " " + getHour());
         log.info("O status da requisão é: " + HttpStatus.CREATED);
         return new ResponseEntity<>(animeService.save(anime), HttpStatus.CREATED);
@@ -64,7 +66,7 @@ public class AnimeController {
     * no service, é realizado as validações e retornarndo o
     * status 0K*/
     @PutMapping()
-    public ResponseEntity<Void> replace(@RequestBody Anime anime) {
+    public ResponseEntity<Void> replace(@RequestBody AnimePutRequestBody anime) {
         animeService.replace(anime);
         return new ResponseEntity<>(HttpStatus.OK);
     }
