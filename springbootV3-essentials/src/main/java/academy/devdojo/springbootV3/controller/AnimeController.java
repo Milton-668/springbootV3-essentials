@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -67,8 +68,9 @@ public class AnimeController {
     /*Método que insere um novo anime na lista, onde que é Mapeado para o
      * corpo do dominio Anime, feito isso é chamado o método save passando
      * o anime e o código de 201*/
+    //A anotação Valid, habilita a validação dos campos
     @PostMapping
-    public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody anime) {
+    public ResponseEntity<Anime> save(@RequestBody @Valid AnimePostRequestBody anime) {
         log.info("The anime is: " + anime + " " + getHour());
         log.info("O status da requisão é: " + HttpStatus.CREATED);
         return new ResponseEntity<>(animeService.save(anime), HttpStatus.CREATED);
