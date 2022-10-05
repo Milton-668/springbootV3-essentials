@@ -48,7 +48,7 @@ public class AnimeController {
      * essa busca é passando um nome, o qual chamará o método na camada service que baterá
      * na repository para buscar no banco de dados para encontrar o name passado.*/
     @GetMapping(path = "/find")
-    public ResponseEntity<List<Anime>> findByName(@RequestParam (required = false) String name) {
+    public ResponseEntity<List<Anime>> findByName(@RequestParam(required = false) String name) {
         log.info("Find by name: " + name + " " + getHour());
         log.info("O status da requisão é: " + getStatus());
         return ResponseEntity.ok(animeService.findByName(name));
@@ -68,7 +68,7 @@ public class AnimeController {
      * corpo do dominio Anime, feito isso é chamado o método save passando
      * o anime e o código de 201*/
     @PostMapping
-    public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody anime) throws Exception {
+    public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody anime) {
         log.info("The anime is: " + anime + " " + getHour());
         log.info("O status da requisão é: " + HttpStatus.CREATED);
         return new ResponseEntity<>(animeService.save(anime), HttpStatus.CREATED);

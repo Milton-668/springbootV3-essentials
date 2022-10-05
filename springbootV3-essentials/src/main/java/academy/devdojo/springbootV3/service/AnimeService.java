@@ -39,12 +39,10 @@ public class AnimeService {
     }
 
     /*Método responsável por adicionar um novo anime na lista*/
-    @Transactional(rollbackFor = Exception.class)
-    public Anime save(AnimePostRequestBody animePostRequestBody) throws Exception {
+    @Transactional
+    public Anime save(AnimePostRequestBody animePostRequestBody){
         //Utilizada para mapear a conversão do DTO para a classe Anime, expondo apenas o necessário
         Anime mapper = AnimeMapper.INSTANCE.AnimePostRequestBodyToAnime(animePostRequestBody);
-        if(true)
-            throw new Exception("bad code");
         return animeRepository.save(mapper);
     }
 
