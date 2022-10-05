@@ -8,6 +8,7 @@ import academy.devdojo.springbootV3.request.AnimePostRequestBody;
 import academy.devdojo.springbootV3.request.AnimePutRequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,9 +39,12 @@ public class AnimeService {
     }
 
     /*Método responsável por adicionar um novo anime na lista*/
-    public Anime save(AnimePostRequestBody animePostRequestBody) {
+    @Transactional(rollbackFor = Exception.class)
+    public Anime save(AnimePostRequestBody animePostRequestBody) throws Exception {
         //Utilizada para mapear a conversão do DTO para a classe Anime, expondo apenas o necessário
         Anime mapper = AnimeMapper.INSTANCE.AnimePostRequestBodyToAnime(animePostRequestBody);
+        if(true)
+            throw new Exception("bad code");
         return animeRepository.save(mapper);
     }
 
