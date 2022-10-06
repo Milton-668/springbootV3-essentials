@@ -7,6 +7,8 @@ import academy.devdojo.springbootV3.service.AnimeService;
 import academy.devdojo.springbootV3.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,15 +29,17 @@ public class AnimeController {
 
     private final DateUtil dateUtil;
     private final AnimeService animeService;
-
+    /* Methodo responsável por listar todos os animes. Sendo que é utilizado
+    * um Page para realizar a paginação dos elementos, onde que é passado como
+    * parametro um pageable que passado como argumento no listAll*/
     @GetMapping
-    public ResponseEntity<List<Anime>> list() {
+    public ResponseEntity<Page<Anime>> list(Pageable pageable) {
         //Responsável por logar o tempo exato que a requisição foi feita
         log.info(getHour());
         //Responsável por logar o status da requisição
         log.info("O status da requisão é: " + getStatus());
         //Retornar a lista com os animes alimentados e o status da aplicação
-        return ResponseEntity.ok(animeService.listAll());
+        return ResponseEntity.ok(animeService.listAll(pageable));
     }
 
     @GetMapping(path = "/{id}")

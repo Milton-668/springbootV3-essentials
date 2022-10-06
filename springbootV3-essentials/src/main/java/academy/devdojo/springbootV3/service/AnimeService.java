@@ -7,6 +7,8 @@ import academy.devdojo.springbootV3.repository.AnimeRepository;
 import academy.devdojo.springbootV3.request.AnimePostRequestBody;
 import academy.devdojo.springbootV3.request.AnimePutRequestBody;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +19,10 @@ import java.util.List;
 public class AnimeService {
 
     private final AnimeRepository animeRepository;
-
-    public List<Anime> listAll() {
-        return animeRepository.findAll();
+    /*Método responsável por buscar todos os elementos contidos no banco de
+    * dados com a paginação, passada por parâmetro*/
+    public Page<Anime> listAll(Pageable pageable) {
+        return animeRepository.findAll(pageable);
     }
 
     /*Método responsável buscar dentro da lista de nomes o nome passado*/
