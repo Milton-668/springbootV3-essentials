@@ -17,12 +17,16 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AnimeService {
-
     private final AnimeRepository animeRepository;
+
     /*Método responsável por buscar todos os elementos contidos no banco de
-    * dados com a paginação, passada por parâmetro*/
+     * dados com a paginação, passada por parâmetro*/
     public Page<Anime> listAll(Pageable pageable) {
         return animeRepository.findAll(pageable);
+    }
+
+    public List<Anime> listAllNonPageable() {
+        return animeRepository.findAll();
     }
 
     /*Método responsável buscar dentro da lista de nomes o nome passado*/
@@ -34,21 +38,18 @@ public class AnimeService {
     public List<Anime> findAllByNameContainingIgnoreCase(String name) {
         return animeRepository.findAllByNameContainingIgnoreCase(name);
     }
-
     /*Método responsável por procurar um anime apartir de um id passado*/
     public Anime findByIdOrElseThrowBadRequestException(long id) {
         return animeRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("Anime not found"));
     }
-
     /*Método responsável por adicionar um novo anime na lista*/
     @Transactional
-    public Anime save(AnimePostRequestBody animePostRequestBody){
+    public Anime save(AnimePostRequestBody animePostRequestBody) {
         //Utilizada para mapear a conversão do DTO para a classe Anime, expondo apenas o necessário
         Anime mapper = AnimeMapper.INSTANCE.AnimePostRequestBodyToAnime(animePostRequestBody);
         return animeRepository.save(mapper);
     }
-
 
     public void delete(Long id) {
         animeRepository.delete(findByIdOrElseThrowBadRequestException(id));

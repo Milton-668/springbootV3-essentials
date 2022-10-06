@@ -42,6 +42,16 @@ public class AnimeController {
         return ResponseEntity.ok(animeService.listAll(pageable));
     }
 
+    @GetMapping(path = "/all")
+    public ResponseEntity<List<Anime>> list() {
+        //Responsável por logar o tempo exato que a requisição foi feita
+        log.info(getHour());
+        //Responsável por logar o status da requisição
+        log.info("O status da requisão é: " + getStatus());
+        //Retornar a lista com os animes alimentados e o status da aplicação
+        return ResponseEntity.ok(animeService.listAllNonPageable());
+    }
+
     @GetMapping(path = "/{id}")
     public ResponseEntity<Anime> findById(@PathVariable Long id) {
         log.info("Find by id: " + id + " " + getHour());
