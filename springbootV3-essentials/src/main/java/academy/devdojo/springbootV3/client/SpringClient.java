@@ -41,23 +41,50 @@ public class SpringClient {
         log.info(exchange.getBody());
         System.out.println("Busca todos os animes através do método exchange e ParameterizedTypeReference\n\n");
 
-        /*Utilizado para acessar o endpoint e postar um novo anime apartir dele*/
+       /* *//*Utilizado para acessar o endpoint e postar um novo anime apartir dele*//*
         Anime kingdom = Anime.builder().name("Kingdom").build();
         Anime kingdomSaved = new RestTemplate().postForObject("http://localhost:8080/animes/", kingdom, Anime.class);
         log.info("Saved anime {}", kingdomSaved);
-        System.out.println("Utiliza a url para postar um novo anime através do postForObject\n\n");
+        System.out.println("Utiliza a url para postar um novo anime através do postForObject\n\n");*/
 
         /*Utilizado para acessar o endpoint passado abaixo e inserir um novo anime de modo que ao acessar o método
         * static é passado um Header do tipo applicationJson*/
         Anime blayBlade = Anime.builder().name("Blay blade").build();
-        ResponseEntity<Anime> blayBade = new RestTemplate()
+        ResponseEntity<Anime> blayBadeSaved = new RestTemplate()
                 .exchange("http://localhost:8080/animes/",
                         HttpMethod.POST,
                         new HttpEntity<>(blayBlade, createJsonHeader()),
                         Anime.class);
         System.out.println("Cria um novo anime através do exchange especificando o mediaType como Json\n\n");
 
-        log.info("Saved anime {}", blayBade);
+        log.info("Saved anime {}", blayBadeSaved);
+
+        /*Utilizado para atualizar o nome do anime da seguinte forma:*/
+        /*É pego através do anime postado anteriormente e é setado em cima dele
+        * um novo nome, feito isso é montado a estrutra do exchange retornando
+        * uma ResponseEntity vazia, com a sua url, e um HttpEntity passando
+        * o animeToBeUpdated e o header, logo é passado o Void.class */
+        Anime animeToBeUpdated = blayBadeSaved.getBody();
+        animeToBeUpdated.setName("Blay blade 2");
+
+        ResponseEntity<Void> blayBadeUpdated = new RestTemplate()
+                .exchange("http://localhost:8080/animes/",
+                        HttpMethod.PUT,
+                        new HttpEntity<>(animeToBeUpdated, createJsonHeader()),
+                        Void.class);
+        System.out.println("Atualiza um anime através do exchange especificando o mediaType como Json\n\n");
+        log.info(blayBadeUpdated);
+        /*Utilizado para deletar um anime atualizado anteriormente. onde que é passado uma url apontando como
+        * parâmetro um id, é passado o tipo do verbo http, logo abaixo a construção do header, o Void.Class e
+        * por fim é passado o id do animeToBeUpdated.*/
+        ResponseEntity<Void> blayBadeDeleted = new RestTemplate()
+                .exchange("http://localhost:8080/animes/{id}",
+                        HttpMethod.DELETE,
+                        new HttpEntity<>(createJsonHeader()),
+                        Void.class,
+                        animeToBeUpdated.getId());
+        System.out.println("Deleta um anime através do exchange especificando o mediaType como Json\n\n");
+        log.info(blayBadeDeleted);
     }
 
     private static HttpHeaders createJsonHeader() {
