@@ -12,7 +12,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
-import static academy.devdojo.springbootV3.util.CreateAnimeUtil.createAnime;
+import static academy.devdojo.springbootV3.util.AnimeCreatorUtil.createAnimeToBeSaved;
 
 @DataJpaTest
 @DisplayName("Test for Anime repository")
@@ -25,7 +25,7 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("Save perists anime when Succesful")
     void save_Persist_Anime_WhenSuccesfull() {
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = createAnimeToBeSaved();
         //Responsável por persistir o dado no banco de dados
         Anime animeSaved = this.animeRepository.save(animeToBeSaved);
         //Verifica se o anime não é nulo
@@ -40,7 +40,7 @@ class AnimeRepositoryTest {
     @DisplayName("Save update anime when Succesful")
     void save_UpdateAnime_WhenSuccesfull() {
 
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = createAnimeToBeSaved();
         //Persiste no BD o anime oriundo do método createdAnime
         Anime animeSaved = this.animeRepository.save(animeToBeSaved);
         //Seta em cima do anime salvo um novo anime
@@ -61,7 +61,7 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("Delete remove anime when Succesful")
     void delete_RemovesAnime_WhenSuccesfull() {
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = createAnimeToBeSaved();
         //Persiste um anime no banco de dados
         Anime animeSaved = this.animeRepository.save(animeToBeSaved);
         //Delete o anime salvo no banco de dados
@@ -78,7 +78,7 @@ class AnimeRepositoryTest {
     @DisplayName("Find By Name returns list of anime when Succesful")
     void findByName_ReturnListOfAnime_WhenSuccesfull() {
         /*Puxa o anime criado contido em createAnime*/
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = createAnimeToBeSaved();
         //Persiste o animeToBeSaved no banco de dados
         Anime animeSaved = this.animeRepository.save(animeToBeSaved);
         //Cria uma variável para utilizar na lista
@@ -109,8 +109,8 @@ class AnimeRepositoryTest {
        /* Assertions.assertThatThrownBy(() -> this.animeRepository.save(anime))
                 .isInstanceOf(ConstraintViolationException.class);*/
         /*Esse método é utilizado para lançar a exception ConstraintViolation a qual é lançada
-        * quando a divergencia no nome, onde que se for capturada a message conforme está abaixo
-        * no withMessageContaining.*/
+         * quando a divergencia no nome, onde que se for capturada a message conforme está abaixo
+         * no withMessageContaining.*/
         Assertions.assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> this.animeRepository.save(anime))
                 .withMessageContaining("The anime name cannot be empty");

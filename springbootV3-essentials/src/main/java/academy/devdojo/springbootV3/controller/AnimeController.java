@@ -33,7 +33,7 @@ public class AnimeController {
     * um Page para realizar a paginação dos elementos, onde que é passado como
     * parametro um pageable que passado como argumento no listAll*/
     @GetMapping
-    public ResponseEntity<Page<Anime>> list(Pageable pageable) {
+    public ResponseEntity<Page<Anime>> listAll(Pageable pageable) {
         //Responsável por logar o tempo exato que a requisição foi feita
         log.info(getHour());
         //Responsável por logar o status da requisição
@@ -43,7 +43,7 @@ public class AnimeController {
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<Anime>> list() {
+    public ResponseEntity<List<Anime>> listAll() {
         //Responsável por logar o tempo exato que a requisição foi feita
         log.info(getHour());
         //Responsável por logar o status da requisição
