@@ -94,6 +94,7 @@ class AnimeControllerTest {
         Assertions.assertThat(animePage.toList()).isNotEmpty().hasSize(1);
         //Verifica se a posição do anime contido na paginação é a mesma do anime esperado.
         Assertions.assertThat(animePage.toList().get(0).getName()).isEqualTo(expectedName);
+        System.out.println();
 
     }
 
