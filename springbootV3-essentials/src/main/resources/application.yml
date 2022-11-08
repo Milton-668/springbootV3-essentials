@@ -11,7 +11,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-
+  main:
+    allow-circular-references: true
 logging:
   level:
     org:
