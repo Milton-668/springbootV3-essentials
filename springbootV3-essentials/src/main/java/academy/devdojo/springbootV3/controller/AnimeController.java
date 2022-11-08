@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,9 +32,10 @@ public class AnimeController {
 
     private final DateUtil dateUtil;
     private final AnimeService animeService;
+
     /* Methodo responsável por listar todos os animes. Sendo que é utilizado
-    * um Page para realizar a paginação dos elementos, onde que é passado como
-    * parametro um pageable que passado como argumento no listAll*/
+     * um Page para realizar a paginação dos elementos, onde que é passado como
+     * parametro um pageable que passado como argumento no listAll*/
     @GetMapping
     public ResponseEntity<Page<Anime>> listAll(Pageable pageable) {
         //Responsável por logar o tempo exato que a requisição foi feita
@@ -57,6 +60,14 @@ public class AnimeController {
     public ResponseEntity<Anime> findById(@PathVariable Long id) {
         log.info("Find by id: " + id + " " + getHour());
         log.info("O status da requisão é: " + getStatus());
+        return ResponseEntity.ok(animeService.findByIdOrElseThrowBadRequestException(id));
+    }
+
+    @GetMapping(path = "by-id/{id}")
+    public ResponseEntity<Anime> findByIdAuthenticationPrincipal(@PathVariable Long id,
+                                                                 //Verifica detalhes do usuário
+                                                                 @AuthenticationPrincipal UserDetails userDetails) {
+        log.info(userDetails);
         return ResponseEntity.ok(animeService.findByIdOrElseThrowBadRequestException(id));
     }
 
