@@ -95,9 +95,7 @@ public class AnimeController {
      * corpo do dominio Anime, feito isso é chamado o método save passando
      * o anime e o código de 201*/
     //A anotação Valid, habilita a validação dos campos
-    @PostMapping
-    //Solicita uma pré autorização para verificar se o usuário é adm
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(path= "/admin/")
     public ResponseEntity<Anime> save(@RequestBody @Valid AnimePostRequestBody anime) {
         log.info("The anime is: " + anime + " " + getHour());
         log.info("O status da requisão é: " + HttpStatus.CREATED);
@@ -107,7 +105,7 @@ public class AnimeController {
     /*Método que delete um anime da lista
      * para isso ele espera um id existente na url
      * e retorna o status 204 após a realização da requisição*/
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = "/admin/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         animeService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -117,7 +115,7 @@ public class AnimeController {
      * é realizado chamado o método replace que encontra-se
      * no service, é realizado as validações e retornarndo o
      * status 0K*/
-    @PutMapping()
+    @PutMapping(path= "/admin/")
     public ResponseEntity<Void> replace(@RequestBody AnimePutRequestBody anime) {
         animeService.replace(anime);
         return new ResponseEntity<>(HttpStatus.OK);

@@ -31,6 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //Gera o token para habilitação
                 //http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and().authorizeHttpRequests()
+                //protege a URL, onde que só quem tiver esse caminho, poderá fazer alteração
+                .antMatchers("/animes/admin/**").hasRole("ADMIN")
+                .antMatchers("/animes/**").hasRole("USER")
                 .anyRequest()
                 .authenticated()
                 .and()
