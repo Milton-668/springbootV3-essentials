@@ -5,13 +5,16 @@ import academy.devdojo.springbootV3.request.AnimePostRequestBody;
 import academy.devdojo.springbootV3.request.AnimePutRequestBody;
 import academy.devdojo.springbootV3.service.AnimeService;
 import academy.devdojo.springbootV3.util.DateUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +40,14 @@ public class AnimeController {
      * um Page para realizar a paginação dos elementos, onde que é passado como
      * parametro um pageable que passado como argumento no listAll*/
     @GetMapping
-    public ResponseEntity<Page<Anime>> listAll(Pageable pageable) {
+    @Operation(summary = "List all animes paginated",
+            description = "The default size is 20, use the parameter size to change the default value",
+            tags = {"anime"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Sucessfull Operation"),
+            @ApiResponse(responseCode = "400", description = "When Anime Does Not Exist in The DataBase")
+    })
+    public ResponseEntity<Page<Anime>> list(@ParameterObject Pageable pageable) {
         //Responsável por logar o tempo exato que a requisição foi feita
         log.info(getHour());
         //Responsável por logar o status da requisição
@@ -47,7 +57,14 @@ public class AnimeController {
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<Anime>> listAll() {
+    @Operation(summary = "List all animes",
+            description = "Lists All of animes exists in DataBase",
+            tags = {"anime"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Sucessfull Operation"),
+            @ApiResponse(responseCode = "400", description = "When Anime Does Not Exist in The DataBase")
+    })
+    public ResponseEntity<List<Anime>> list() {
         //Responsável por logar o tempo exato que a requisição foi feita
         log.info(getHour());
         //Responsável por logar o status da requisição
@@ -57,6 +74,13 @@ public class AnimeController {
     }
 
     @GetMapping(path = "/{id}")
+    @Operation(summary = "Find By ID",
+            description = "Show anime from existing id",
+            tags = {"anime"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Sucessfull Operation"),
+            @ApiResponse(responseCode = "400", description = "When Anime Does Not Exist in The DataBase")
+    })
     public ResponseEntity<Anime> findById(@PathVariable Long id) {
         log.info("Find by id: " + id + " " + getHour());
         log.info("O status da requisão é: " + getStatus());
@@ -64,6 +88,13 @@ public class AnimeController {
     }
 
     @GetMapping(path = "by-id/{id}")
+    @Operation(summary = "Find By ID",
+            description = "Show anime from existing id authenticated",
+            tags = {"anime"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Sucessfull Operation"),
+            @ApiResponse(responseCode = "400", description = "When Anime Does Not Exist in The DataBase")
+    })
     public ResponseEntity<Anime> findByIdAuthenticationPrincipal(@PathVariable Long id,
                                                                  //Verifica detalhes do usuário
                                                                  @AuthenticationPrincipal UserDetails userDetails) {
@@ -75,6 +106,13 @@ public class AnimeController {
      * essa busca é passando um nome, o qual chamará o método na camada service que baterá
      * na repository para buscar no banco de dados para encontrar o name passado.*/
     @GetMapping(path = "/find")
+    @Operation(summary = "Find By Name",
+            description = "Show anime from existing of name",
+            tags = {"anime"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Sucessfull Operation"),
+            @ApiResponse(responseCode = "400", description = "When Anime Does Not Exist in The DataBase")
+    })
     public ResponseEntity<List<Anime>> findByName(@RequestParam(required = false) String name) {
         log.info("Find by name: " + name + " " + getHour());
         log.info("O status da requisão é: " + getStatus());
@@ -85,6 +123,13 @@ public class AnimeController {
      * maiusculas ou minusculas, basta passar uma letra do anime desejado que ele
      * já a encontra*/
     @GetMapping(path = "/find/")
+    @Operation(summary = "Find By Name Ignore Case",
+            description = "Show existing name anime with incomplete name",
+            tags = {"anime"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Sucessfull Operation"),
+            @ApiResponse(responseCode = "400", description = "When Anime Does Not Exist in The DataBase")
+    })
     public ResponseEntity<List<Anime>> findAllByNameContainingIgnoreCase(@RequestParam String name) {
         log.info("Find by name: " + name + " " + getHour());
         log.info("O status da requisão é: " + getStatus());
@@ -95,7 +140,14 @@ public class AnimeController {
      * corpo do dominio Anime, feito isso é chamado o método save passando
      * o anime e o código de 201*/
     //A anotação Valid, habilita a validação dos campos
-    @PostMapping(path= "/admin/")
+    @PostMapping(path = "/admin/")
+    @Operation(summary = "Insert anime on BD",
+            description = "Insert anime on BD",
+            tags = {"anime"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created Operation"),
+            @ApiResponse(responseCode = "400", description = "When Anime Does Not Exist in The DataBase")
+    })
     public ResponseEntity<Anime> save(@RequestBody @Valid AnimePostRequestBody anime) {
         log.info("The anime is: " + anime + " " + getHour());
         log.info("O status da requisão é: " + HttpStatus.CREATED);
@@ -106,6 +158,13 @@ public class AnimeController {
      * para isso ele espera um id existente na url
      * e retorna o status 204 após a realização da requisição*/
     @DeleteMapping(path = "/admin/{id}")
+    @Operation(summary = "Delete anime on BD",
+            description = "Delete anime on BD",
+            tags = {"anime"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Sucessfull Operation"),
+            @ApiResponse(responseCode = "400", description = "When Anime Does Not Exist in The DataBase")
+    })
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         animeService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -115,7 +174,14 @@ public class AnimeController {
      * é realizado chamado o método replace que encontra-se
      * no service, é realizado as validações e retornarndo o
      * status 0K*/
-    @PutMapping(path= "/admin/")
+    @PutMapping(path = "/admin/")
+    @Operation(summary = "Update anime on BD",
+            description = "Update anime on BD",
+            tags = {"anime"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Sucessfull Operation"),
+            @ApiResponse(responseCode = "400", description = "When Anime Does Not Exist in The DataBase")
+    })
     public ResponseEntity<Void> replace(@RequestBody AnimePutRequestBody anime) {
         animeService.replace(anime);
         return new ResponseEntity<>(HttpStatus.OK);

@@ -87,7 +87,7 @@ class AnimeControllerTest {
         /*Aqui ele puxa o método criado para ser inserido um anime*/
         String expectedName = AnimeCreatorUtil.createValidAnime().getName();
         //É realizada a chamada do listall paginado
-        Page<Anime> animePage = animeController.listAll(null).getBody();
+        Page<Anime> animePage = animeController.list(null).getBody();
         //Verifica se o conteúdo passado não é nulo
         Assertions.assertThat(animePage).isNotNull();
         //Verfica se o contéudo da lista não é vazio e se é do tamanho 1
@@ -105,7 +105,7 @@ class AnimeControllerTest {
         //É puxado o método utils que trás um anime
         String expectedName = AnimeCreatorUtil.createValidAnime().getName();
         //é chamado o método que trás consigo a lista de todos os animes
-        List<Anime> animes = animeController.listAll().getBody();
+        List<Anime> animes = animeController.list().getBody();
         //é realizado uma verificação se o anime contido na lista:
         //não é nulo, não é vazio e o seu tamanho é 1
         Assertions.assertThat(animes).isNotNull().isNotEmpty().hasSize(1);
