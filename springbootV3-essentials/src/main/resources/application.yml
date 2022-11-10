@@ -3,6 +3,8 @@ server:
     include-stacktrace: on_param
 ##?trace=true habilita o stacktrace
 spring:
+  application:
+    name: springbootV3-essentials
   datasource:
     url: jdbc:mysql://localhost:3306/anime?createDatabaseIfNotExist=true
 

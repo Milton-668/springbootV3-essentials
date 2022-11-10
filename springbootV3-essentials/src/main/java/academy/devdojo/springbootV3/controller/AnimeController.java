@@ -31,6 +31,7 @@ import java.util.List;
 @Log4j2
 //Utilizada para instanciar uma classe, onde requer o constructor
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class AnimeController {
 
     private final DateUtil dateUtil;
