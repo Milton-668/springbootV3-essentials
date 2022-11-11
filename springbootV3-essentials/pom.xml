@@ -10,16 +10,21 @@
     </parent>
     <groupId>academy.devdojo</groupId>
     <artifactId>springbootV3-essentials</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>springbootV3-essentials</name>
     <description>Curso de Spring Boot V3</description>
     <properties>
+        <!-- <sonar.coverage.exclusions>
+            **/client/**,
+        </sonar.coverage.exclusions>-->
         <java.version>11</java.version>
         <org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
         <springdoc-openapi-ui.version>1.6.12</springdoc-openapi-ui.version>
-        <sonar.coverage.exclusions>
-            **/client/**,
-        </sonar.coverage.exclusions>
+        <jib-maven-plugin.version>3.3.1</jib-maven-plugin.version>
+        <docker.distroless.image>gcr.io/distroless/java:11</docker.distroless.image>
+        <docker.repo.url>milton668</docker.repo.url>
+        <docker.repo.project>springbootv3-essentials</docker.repo.project>
+        <docker.image.name>${docker.repo.url}/${docker.repo.project}</docker.image.name>
     </properties>
 
     <dependencies>
@@ -116,6 +121,27 @@
     </profiles>
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>${jib-maven-plugin.version}</version>
+                <configuration>
+                    <from>
+                        <image>${docker.distroless.image}</image>
+                    </from>
+                    <to>
+                        <image>${docker.image.name}</image>
+                        <tags>
+                            <tag>${project.version}</tag>
+                        </tags>
+                    </to>
+                    <container>
+                        <mainClass>
+                            academy.devdojo.springbootV3.SpringbootV3EssentialsApplication
+                        </mainClass>
+                    </container>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
